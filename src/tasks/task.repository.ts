@@ -16,8 +16,6 @@ export class TaskRepository extends Repository<Task> {
 
 		query.where('task.userId = :userId', { userId: user.id });
 
-		// console.log(query);
-
 		if (status) {
 			query.andWhere('task.status = :status', { status });
 		}

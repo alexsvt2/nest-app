@@ -14,6 +14,12 @@ export class Task extends BaseEntity {
     @Column()
     description: string;
 
+    @Column({default: ''})
+    image: string;
+
+    @Column({default: ''})
+    imagePath: string;
+
     @Column()
     status: TaskStatus;
 

@@ -7,6 +7,9 @@ import { Task } from './task.entity';
 import { TaskStatus } from './task-status.enum';
 import { User } from 'src/auth/user.entity';
 
+import * as fs from 'fs';
+import * as path from 'path';
+
 @Injectable()
 export class TasksService {
 	constructor(private taskRepository: TaskRepository) {}
@@ -23,8 +26,6 @@ export class TasksService {
 		if (!found) {
 			throw new NotFoundException(`Task with id "${id}" not found`);
 		}
-
-		console.log(found);
 		return found;
 	}
 
@@ -44,5 +45,17 @@ export class TasksService {
 		if (result.affected === 0) {
 			throw new NotFoundException(`Task with id ${id} was not found`);
 		}
+	}
+
+	async setTaskImage(id: number, image: string, imageUrl: string) {
+
+
+		const oldImageName = (await this.taskRepository.findOne(id)).image;
+		console.log(oldImageName);
+		if(oldImageName){
+			fs.unlinkSync(`./images/${oldImageName}`);
+		}
+
+		this.taskRepository.update(id, { image: image, imagePath: imageUrl });
 	}
 }
